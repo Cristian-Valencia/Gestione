@@ -6,6 +6,7 @@ public class Category {
 	
 	
 	private int id;
+	private String categoryId;
 	private String name;	
 	private ArrayList<Post> posts;
 	
@@ -13,6 +14,16 @@ public class Category {
 		
 	}
 	
+	
+	
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -34,7 +45,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", posts=" + posts + "]";
+		return "Category [id=" + id + " + categoryId=" + categoryId +  ", name=" + name + ", posts=" + posts + "]";
 	}
 	
 	
