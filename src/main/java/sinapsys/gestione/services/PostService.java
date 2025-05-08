@@ -20,5 +20,23 @@ public class PostService {
 		
 	}
 	
+	public Post postDetailService(int varId) {
+		return postRepo.getById(varId);
+	}
+	
+	public boolean postInsertService( Post pos ) {
+		return postRepo.Insert(pos);
+	}
+	
+	public boolean posUpdateService( Post pos ) {
+		return postRepo.Update(pos);
+	}
+	
+	public boolean posDeleteService( int varId ) {
+		
+		return postRepo.Delete(varId);
+		
+	}
+	
 
 }
