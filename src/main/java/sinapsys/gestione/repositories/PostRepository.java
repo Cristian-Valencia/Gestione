@@ -103,7 +103,7 @@ public class PostRepository implements IRepositoryRead<Post>, IRepositoryWrite<P
 //				System.out.println(query);
 //				
 //				System.out.println(ps);
-				
+				 
 				int affRows = ps.executeUpdate();
 				
 				if(affRows > 0)
@@ -169,6 +169,8 @@ public class PostRepository implements IRepositoryRead<Post>, IRepositoryWrite<P
 			ps.setInt(1, id);
 			
 			ResultSet rs = ps.executeQuery();
+			
+			System.out.println(ps);
 			
 			while (rs.next()) {
 				

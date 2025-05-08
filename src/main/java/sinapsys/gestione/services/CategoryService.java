@@ -18,5 +18,29 @@ public class CategoryService {
 		return catRepo.getAll();
 	}
 	
+	public Category catDetailService(int varId) {
+		
+		return catRepo.getById(varId);
+		
+	}
+	
+	public boolean catInsertService(Category cat) {
+		
+		return catRepo.Insert(cat);
+		
+	}
+	
+	public boolean catUpdateService(Category cat) {
+		
+		return catRepo.Update(cat);
+		
+	}
+	
+	public boolean catDeleteService(int varId) {
+		
+		return catRepo.Delete(varId);
+		
+	}
+	
 
 }
