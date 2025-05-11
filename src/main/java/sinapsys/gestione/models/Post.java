@@ -3,15 +3,23 @@ package sinapsys.gestione.models;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Post {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String postId;
 	private String title;
 	private String content;
 	private String author;
 	private Date createdAt;	
-	private ArrayList<Category> categories;
+//	private ArrayList<Category> categories;
 	
 	
 	public Post() {
@@ -82,20 +90,20 @@ public class Post {
 	}
 
 
-	public ArrayList<Category> getCategories() {
-		return categories;
-	}
-
-
-	public void setCategories(ArrayList<Category> categories) {
-		this.categories = categories;
-	}
+//	public ArrayList<Category> getCategories() {
+//		return categories;
+//	}
+//
+//
+//	public void setCategories(ArrayList<Category> categories) {
+//		this.categories = categories;
+//	}
 
 
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", postId=" + postId + ", title=" + title + ", content=" + content + ", author="
-				+ author + ", createdAt=" + createdAt + ", categories=" + categories + "]";
+				+ author + ", createdAt=" + createdAt +  "]";
 	}
 	
 
