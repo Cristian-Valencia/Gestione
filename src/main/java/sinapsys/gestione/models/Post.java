@@ -2,11 +2,19 @@ package sinapsys.gestione.models;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Post {
@@ -19,7 +27,15 @@ public class Post {
 	private String content;
 	private String author;
 	private Date createdAt;	
-//	private ArrayList<Category> categories;
+	
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+        name = "post_category",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )  
+    @JsonManagedReference()
+    private Set<Category> categories = new HashSet<>();
 	
 	
 	public Post() {
@@ -27,8 +43,6 @@ public class Post {
 	}
 	
 	
-	
-
 
 	public int getId() {
 		return id;
@@ -90,21 +104,33 @@ public class Post {
 	}
 
 
-//	public ArrayList<Category> getCategories() {
-//		return categories;
-//	}
-//
-//
-//	public void setCategories(ArrayList<Category> categories) {
-//		this.categories = categories;
-//	}
+
+
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+
+
+
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+
+
 
 
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", postId=" + postId + ", title=" + title + ", content=" + content + ", author="
-				+ author + ", createdAt=" + createdAt +  "]";
+				+ author + ", createdAt=" + createdAt + ", categories=" + categories + "]";
 	}
+
+
+	
 	
 
 	

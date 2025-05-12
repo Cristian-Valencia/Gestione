@@ -1,8 +1,10 @@
 package sinapsys.gestione.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import sinapsys.gestione.models.Post;
 import sinapsys.gestione.services.PostService;
@@ -47,42 +51,61 @@ public class PostController {
 	
 	
 	@PostMapping
-	public ResponseEntity postInsert(@RequestBody Post pos) {
+	public ResponseEntity<Post> postInsert(@RequestBody Post post,
+            @RequestParam(value = "categoryIds", required = false) List<Integer> categoryIds) {
 		
-		boolean insertResult = posServ.postInsertService(pos);
 		
-		if(insertResult)
+		try {
 			
-			return ResponseEntity.ok().build();
-		else
-			return ResponseEntity.unprocessableEntity().build();
+			Post savedPost = posServ.postInsertService(post, categoryIds);
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(savedPost.getId())
+                    .toUri();
 			
-	}
-	
-	
-	@PutMapping("{varId}")
-	public ResponseEntity postUpdate(@PathVariable int varId, @RequestBody Post pos) {
-		
-		if(varId != 0 ) {
+			return ResponseEntity.created(location).body(savedPost);
 			
-			pos.setId(varId);
+		} catch(RuntimeException e) {
 			
-			if(posServ.posUpdateService(pos)){
-				return ResponseEntity.ok().build();
-			}
+			System.out.println("Errore durante l'inserimento del post: " + e.getMessage());
+			
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null); 
 			
 		}
-		
-		return ResponseEntity.badRequest().build();
-		
+			
 	}
 	
+	
+//	@PutMapping("{varId}")
+//	public ResponseEntity postUpdate(@PathVariable int varId, @RequestBody Post pos) {
+//		
+//		if(varId != 0 ) {
+//			
+//			pos.setId(varId);
+//			
+//			if(posServ.posUpdateService(pos)){
+//				return ResponseEntity.ok().build();
+//			}
+//			
+//		}
+//		
+//		return ResponseEntity.badRequest().build();
+//		
+//	}
+//	
 	@DeleteMapping("{varId}")
-	public ResponseEntity postDelete(@PathVariable int varId) {
+	public ResponseEntity<Void> postDelete(@PathVariable int varId) {
 		
-		if(posServ.posDeleteService(varId))
-			return ResponseEntity.ok().build();
-		return ResponseEntity.badRequest().build();
+        try {
+            posServ.posDeleteService(varId);
+            return ResponseEntity.noContent().build(); // 204 No Content, assumendo successo
+        } catch (Exception e) {
+            // Log dell'errore per debugging
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build(); // 400 Bad Request in caso di errore
+        }
 		
 	}
 	

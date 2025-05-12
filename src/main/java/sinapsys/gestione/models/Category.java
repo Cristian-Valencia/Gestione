@@ -1,12 +1,17 @@
 package sinapsys.gestione.models;
 
-import java.util.ArrayList;
 
-import jakarta.persistence.Column;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
 
 
 @Entity
@@ -17,7 +22,10 @@ public class Category {
 	private int id;
 	private String categoryId;
 	private String nameCategory;	
-//	private ArrayList<Post> posts;
+	
+	@ManyToMany(mappedBy = "categories")
+	@JsonBackReference("posts")
+	private Set<Post> posts = new HashSet<>();
 	
 	public Category() {
 		
@@ -45,17 +53,25 @@ public class Category {
 	public void setNameCategory(String nameCategory) {
 		this.nameCategory = nameCategory;
 	}
-//	public ArrayList<Post> getPosts() {
-//		return posts;
-//	}
-//	public void setPosts(ArrayList<Post> posts) {
-//		this.posts = posts;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		return "Category [id=" + id + " + categoryId=" + categoryId +  ", name=" + name + ", posts=" + posts + "]";
-//	}
-//	
+
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", categoryId=" + categoryId + ", nameCategory=" + nameCategory + ", posts="
+				+ posts + "]";
+	}
+
+	
+	
 	
 }
