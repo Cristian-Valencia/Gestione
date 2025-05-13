@@ -78,23 +78,18 @@ public class PostController {
 	}
 	
 	
-//	@PutMapping("{varId}")
-//	public ResponseEntity postUpdate(@PathVariable int varId, @RequestBody Post pos) {
-//		
-//		if(varId != 0 ) {
-//			
-//			pos.setId(varId);
-//			
-//			if(posServ.posUpdateService(pos)){
-//				return ResponseEntity.ok().build();
-//			}
-//			
-//		}
-//		
-//		return ResponseEntity.badRequest().build();
-//		
-//	}
-//	
+	@PutMapping("{varId}")
+	public ResponseEntity postUpdate(@PathVariable int varId, @RequestBody Post updatedPost) {
+		
+        Post post = posServ.posUpdateService(varId, updatedPost);
+        if (post != null) {
+            return new ResponseEntity<>(post, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+		
+	}
+	
 	@DeleteMapping("{varId}")
 	public ResponseEntity<Void> postDelete(@PathVariable int varId) {
 		

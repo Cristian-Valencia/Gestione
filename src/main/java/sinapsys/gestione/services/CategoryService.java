@@ -15,30 +15,30 @@ public class CategoryService {
 	private CategoryRepository catRepo;
 	
 	public List<Category> catListService(){
-		return catRepo.getAll();
+		return catRepo.findAll();
 	}
 	
 	public Category catDetailService(int varId) {
 		
-		return catRepo.getById(varId);
+		return catRepo.findById(varId).orElse(null);
 		
 	}
 	
-	public boolean catInsertService(Category cat) {
-		
-		return catRepo.Insert(cat);
-		
-	}
+//	public boolean catInsertService(Category cat) {
+//		
+//		return catRepo.Insert(cat);
+//		
+//	}
+//	
+//	public boolean catUpdateService(Category cat) {
+//		
+//		return catRepo.Update(cat);
+//		
+//	}
 	
-	public boolean catUpdateService(Category cat) {
+	public void catDeleteService(int varId) {
 		
-		return catRepo.Update(cat);
-		
-	}
-	
-	public boolean catDeleteService(int varId) {
-		
-		return catRepo.Delete(varId);
+		catRepo.deleteById(varId);
 		
 	}
 	
