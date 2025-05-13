@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class Category {
 	
 	@ManyToMany(mappedBy = "categories")
 	@JsonBackReference("posts")
+	@JsonIgnore
 	private Set<Post> posts = new HashSet<>();
 	
 	public Category() {

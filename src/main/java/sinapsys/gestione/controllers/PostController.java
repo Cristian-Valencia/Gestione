@@ -2,6 +2,8 @@ package sinapsys.gestione.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import sinapsys.gestione.models.Category;
+import sinapsys.gestione.models.CategoryDTO;
 import sinapsys.gestione.models.Post;
+import sinapsys.gestione.models.PostResponseDTO;
+import sinapsys.gestione.repositories.PostRepository;
 import sinapsys.gestione.services.PostService;
 
 @RestController
@@ -26,6 +32,9 @@ public class PostController {
 	
 	@Autowired
 	private PostService posServ;
+	
+	@Autowired
+	private PostRepository postRepo;
 	
 	
 	@GetMapping
@@ -38,16 +47,56 @@ public class PostController {
 	@GetMapping("{varId}")
 	public ResponseEntity postDetails(@PathVariable int varId) {
 		
-		Post resu = posServ.postDetailService(varId);
-		
-		if( resu == null)
+//		Post resu = posServ.postDetailService(varId);
+//		
+//		if( resu == null)
+//			
+//			return ResponseEntity.notFound().build();
+//		else
+//			return ResponseEntity.ok(resu);
+//		
+		Optional<Post> postOptional = postRepo.findById(varId);
+		if(postOptional.isPresent()) {
 			
+			Post post = postOptional.get();
+			PostResponseDTO responseDTO = convertToDto(post);
+			return ResponseEntity.ok(responseDTO);
+			
+		} else {
 			return ResponseEntity.notFound().build();
-		else
-			return ResponseEntity.ok(resu);
+		}
 		
 		
 	}
+	
+	private PostResponseDTO convertToDto(Post post) {
+		
+		PostResponseDTO dto = new PostResponseDTO();
+		dto.setId(post.getId());
+		dto.setPostId(post.getPostId());
+		dto.setTitle(post.getTitle());
+		dto.setContent(post.getContent());
+		dto.setAuthor(post.getAuthor());
+		dto.setCreatedAt(post.getCreatedAt());
+		dto.setCategories(post.getCategories().stream()
+				.map(this::converttoCategoryDto)
+				.collect(Collectors.toSet()));
+		return dto;
+		
+		
+	}
+	
+	
+	private CategoryDTO converttoCategoryDto(Category category) {
+		
+		CategoryDTO dto = new CategoryDTO();
+		dto.setId(category.getId());
+		dto.setCategoryId(category.getCategoryId());
+		dto.setNameCategory(category.getNameCategory());
+		return dto;
+		
+	}
+	
 	
 	
 	@PostMapping

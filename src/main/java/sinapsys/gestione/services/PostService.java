@@ -40,11 +40,9 @@ public class PostService {
 		
         try {
             Post savedPost = postRepo.save(pos);
-            System.out.println("arrivato qui" + categoryIds);
 
             if (categoryIds != null && !categoryIds.isEmpty()) {
                 Set<Category> categories = new HashSet<>(catRepo.findAllById(categoryIds));
-                System.out.println(categories);
                 savedPost.setCategories(categories);
                 postRepo.save(savedPost); 
             }
