@@ -66,21 +66,24 @@ public class PostService {
 		
 	}
 	
+	@Transactional
 	public Post posUpdateService( int id, Post updatePost ) {
 
 		return postRepo.findById(id)
 				.map(existingPost ->{
 					
+					
+
 					existingPost.setPostId(updatePost.getPostId());
 					existingPost.setTitle(updatePost.getTitle());
 					existingPost.setContent(updatePost.getContent());
 					existingPost.setAuthor(updatePost.getAuthor());
 					existingPost.setCreatedAt(updatePost.getCreatedAt());
+
+
+							
 					
-					existingPost.getCategories().clear();
-					existingPost.getCategories().addAll(updatePost.getCategories());					
-					
-					return postRepo.save(updatePost);
+					return postRepo.save(existingPost);
 					
 				}).orElse(null);
 				

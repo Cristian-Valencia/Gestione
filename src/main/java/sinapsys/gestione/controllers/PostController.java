@@ -47,14 +47,7 @@ public class PostController {
 	@GetMapping("{varId}")
 	public ResponseEntity postDetails(@PathVariable int varId) {
 		
-//		Post resu = posServ.postDetailService(varId);
-//		
-//		if( resu == null)
-//			
-//			return ResponseEntity.notFound().build();
-//		else
-//			return ResponseEntity.ok(resu);
-//		
+		
 		Optional<Post> postOptional = postRepo.findById(varId);
 		if(postOptional.isPresent()) {
 			
@@ -137,6 +130,7 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 		
+        
 	}
 	
 	@DeleteMapping("{varId}")
