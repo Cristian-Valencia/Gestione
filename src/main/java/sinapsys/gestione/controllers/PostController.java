@@ -38,7 +38,7 @@ public class PostController {
 	
 	
 	@GetMapping
-	public List<Post> postList(){
+	public List<PostResponseDTO> postList(){
 		
 		return posServ.postListService();
 	}

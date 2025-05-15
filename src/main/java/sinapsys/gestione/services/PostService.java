@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import sinapsys.gestione.models.Category;
+import sinapsys.gestione.models.CategoryDTO;
 import sinapsys.gestione.models.Post;
+import sinapsys.gestione.models.PostResponseDTO;
 import sinapsys.gestione.repositories.CategoryRepository;
 import sinapsys.gestione.repositories.PostRepository;
 
@@ -26,10 +28,34 @@ public class PostService {
 	@Autowired
 	private CategoryRepository catRepo;
 	
-	public List<Post> postListService(){
+	public List<PostResponseDTO> postListService(){
 		
-		return postRepo.findAll();
+		List<Post> posts = postRepo.findAll();
 		
+		List<PostResponseDTO> postDTOs = new ArrayList<>();
+		
+        for (Post post : posts) {
+        	PostResponseDTO postDTO = new PostResponseDTO();
+            postDTO.setId(post.getId());
+            postDTO.setPostId(post.getPostId());
+            postDTO.setTitle(post.getTitle());
+            postDTO.setContent(post.getContent());
+            postDTO.setAuthor(post.getAuthor());
+            postDTO.setCreatedAt(post.getCreatedAt());
+
+            Set<CategoryDTO> categoryDTOs = new HashSet<>();
+            for (Category category : post.getCategories()) {
+                CategoryDTO categoryDTO = new CategoryDTO();
+                categoryDTO.setId(category.getId());
+                categoryDTO.setCategoryId(category.getCategoryId());
+                categoryDTO.setNameCategory(category.getNameCategory());
+                categoryDTOs.add(categoryDTO);
+            }
+            postDTO.setCategories(categoryDTOs);
+            postDTOs.add(postDTO);
+        }
+
+		return postDTOs;
 	}
 	
 	public Post postDetailService(int varId) {
