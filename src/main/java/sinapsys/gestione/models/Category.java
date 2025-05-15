@@ -70,7 +70,7 @@ public class Category {
 	@Override
 	public String toString() {
 		return "Category [id=" + id + ", categoryId=" + categoryId + ", nameCategory=" + nameCategory + ", posts="
-				 + "]";
+				  + "]";
 	}
 
 	

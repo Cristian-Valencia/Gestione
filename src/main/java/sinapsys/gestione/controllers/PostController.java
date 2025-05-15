@@ -121,9 +121,10 @@ public class PostController {
 	
 	
 	@PutMapping("{varId}")
-	public ResponseEntity postUpdate(@PathVariable int varId, @RequestBody Post updatedPost) {
+	public ResponseEntity postUpdate(@PathVariable int varId, @RequestBody Post updatedPost, 
+			@RequestParam(value = "categoryIds", required = false) List<Integer> categoryIds) {
 		
-        Post post = posServ.posUpdateService(varId, updatedPost);
+        Post post = posServ.posUpdateService(varId, updatedPost, categoryIds);
         if (post != null) {
             return new ResponseEntity<>(post, HttpStatus.OK);
         } else {

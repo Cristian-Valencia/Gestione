@@ -1,5 +1,6 @@
 package sinapsys.gestione.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +68,7 @@ public class PostService {
 	}
 	
 	@Transactional
-	public Post posUpdateService( int id, Post updatePost ) {
+	public Post posUpdateService( int id, Post updatePost, List<Integer> categoriesIds ) {
 
 		return postRepo.findById(id)
 				.map(existingPost ->{
@@ -79,16 +80,23 @@ public class PostService {
 					existingPost.setContent(updatePost.getContent());
 					existingPost.setAuthor(updatePost.getAuthor());
 					existingPost.setCreatedAt(updatePost.getCreatedAt());
-
-
-							
 					
+					
+					
+					if (categoriesIds != null && !categoriesIds.isEmpty()) {
+						Set<Category> categories = new HashSet<>(catRepo.findAllById(categoriesIds));		                
+						existingPost.setCategories(categories);
+		            }
+										
 					return postRepo.save(existingPost);
 					
 				}).orElse(null);
 				
 		
 	}
+	
+
+	
 	
 	public void posDeleteService( int varId ) {
 		

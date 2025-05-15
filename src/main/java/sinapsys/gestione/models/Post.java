@@ -45,7 +45,6 @@ public class Post {
 		
 	}
 	
-	
 
 	public int getId() {
 		return id;
@@ -129,7 +128,7 @@ public class Post {
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", postId=" + postId + ", title=" + title + ", content=" + content + ", author="
-				+ author + ", createdAt=" + createdAt + ", categories=" + "]";
+				+ author + ", createdAt=" + createdAt + ", categories="  + "]";
 	}
 
 
